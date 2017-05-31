@@ -181,11 +181,16 @@ class Tests {
   }
 
   static isAString(testFn, opts={}) {
-    opts = Object.assign({required: true, testString: 'string'}, opts);
+    opts = Object.assign({required: true, testString: 'string', emptyString: false}, opts);
 
-    let good = opts.testString;
+    let good = [opts.testString];
     let bad = [1,true,[],()=>{},{}];
-    ({good, bad} = allowFalsy(good, bad, opts.allowFalsy));
+    ({good, bad} = allowFalsy(good, bad, opts.allowFalsy, {noEmptyString: true}));
+    if (opts.emptyString || opts.allowFalsy) {
+      good.push('');
+    } else {
+      bad.push('');
+    }
 
     Tests.goodAndBad(good, bad, testFn, opts);
   }
@@ -195,7 +200,7 @@ class Tests {
   }
 
   static isAStringOrStringArray(testFn, opts={}) {
-    opts = Object.assign({required: true, testString: 'string', emptyArray: false}, opts);
+    opts = Object.assign({required: true, testString: 'string', emptyArray: false, emptyString: false}, opts);
 
     let good = [opts.testString, [opts.testString]];
     let bad = [1,true,()=>{},{}];
@@ -204,7 +209,14 @@ class Tests {
     } else {
       bad.push([]);
     }
-    ({good, bad} = allowFalsy(good, bad, opts.allowFalsy));
+    ({good, bad} = allowFalsy(good, bad, opts.allowFalsy, {noEmptyString: true}));
+    if (opts.emptyString || opts.allowFalsy) {
+      good.push('');
+      good.push(['']);
+    } else {
+      bad.push('');
+      bad.push(['']);
+    }
 
     Tests.goodAndBad(good, bad, testFn, opts);
   }
@@ -227,10 +239,15 @@ class Tests {
   }
 
   static isADateString(testFn, opts={}) {
-    opts = Object.assign({required: true}, opts);
-    let good = moment().toISOString();
+    opts = Object.assign({required: true, emptyString: false}, opts);
+    let good = [moment().toISOString()];
     let bad = [1,'string',true,[],()=>{},{},new Date(),moment()];
-    ({good, bad} = allowFalsy(good, bad, opts.allowFalsy));
+    ({good, bad} = allowFalsy(good, bad, opts.allowFalsy, {noEmptyString: true}));
+    if (opts.emptyString || opts.allowFalsy) {
+      good.push('');
+    } else {
+      bad.push('');
+    }
     Tests.goodAndBad(good, bad, testFn, opts);
   }
 

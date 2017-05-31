@@ -140,11 +140,10 @@ Tests.isABoolean(test, {allowStrings: true});
 
 ##### isAString(testFn, opts);
 
-*NB: This will always reject the empty string `''`.*
-
 Additional opts: 
 
 * `testString: 'string'`
+* `emptyString: false`
 
 ```js
 const test = arg => Joi.attempt(arg, Joi.string().required());
@@ -158,6 +157,14 @@ If only certain strings are allowed (e.g. they have to be formatted as IP addres
 const test = arg => Joi.attempt(arg, Joi.string().ip().required());
 
 Tests.isAString(test, {testString: '0.0.0.0'});
+```
+
+Empty strings are by default considered 'bad' arguments. If you wish to allow the empty string:
+
+```js
+const test = arg => { if (typeof arg !== 'string') { throw new Error(); } }
+
+Tests.isAString(test, {emptyString: true});
 ```
 
 
@@ -203,6 +210,15 @@ const test = arg => Joi.attempt(arg, Joi.string().isoDate().required());
 
 Tests.isADateString(test);
 ```
+
+Empty strings are by default considered 'bad' arguments. If you wish to allow the empty string:
+
+```js
+const test = arg => Joi.attempt(arg, Joi.alternatives().try(Joi.only('').required(), Joi.string().isoDate().required()));
+
+Tests.isADateString(test);
+```
+
 
 ##### isANumber(test, opts)
 

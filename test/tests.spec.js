@@ -123,6 +123,10 @@ describe('Tests', () => {
       const test = (input) => Joi.attempt(input || 'string', Joi.string().optional());
       Tests.isAString(test, {allowFalsy: true});
     });
+    it('tests for strings including empty string', () => {
+      const test = (input) => { if (typeof input !== 'string') { throw new Error() } };
+      Tests.isAString(test, {emptyString: true});
+    });
 
     it('tests for constrained strings, required by default', () => {
       const test = (input) => Joi.attempt(input, Joi.string().only(testString).required());
@@ -176,6 +180,12 @@ describe('Tests', () => {
       const test = (input) => Joi.attempt(input, Joi.alternatives().try(Joi.string().required(), Joi.array().items(Joi.string().required()).required()).required());
       Tests.isAStringOrStringArray(test, {emptyArray: false});
     });
+    it('tests for strings or string arrays allowing empty strings', () => {
+      const test = (input) => Joi.attempt(input, Joi.alternatives().try(Joi.string().required().allow(''), Joi.array().items(Joi.string().allow('').required()).required()).required());
+      Tests.isAStringOrStringArray(test, {emptyString: true});
+    });
+
+
 
     it('tests isThisString', () => {
       const allowed = ['a', 'b', 'c'];
@@ -213,6 +223,10 @@ describe('Tests', () => {
     it('tests for optional date strings', () => {
       const test = (input) => Joi.attempt(input, Joi.string().isoDate().optional());
       Tests.isADateString(test, {required: false});
+    });
+    it('tests for date strings, allowing empty string', () => {
+      const test = (input) => Joi.attempt(input, Joi.string().isoDate().required().allow(''));
+      Tests.isADateString(test, {emptyString: true});
     });
 
     it('tests field for date string, required by default', () => {
