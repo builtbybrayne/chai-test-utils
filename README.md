@@ -46,11 +46,11 @@ describe('requiresAPositiveInt()', () => {
 ```
 
 This will generate a set of good args ('Good') that are positive integers and a set of bad args that include a bunch of other types (strings, arrays, functions, NaN, undefined etc) as well as negative ints, non-integer numbers etc. It will call your function with each of these values and expect it to fail for all but the positive integers... just as you requested. It calls the chai `expect()` function itself, so you don't need to.
-e: true})` and 
+
 
 #### Options
 
-There are a bunch of options which apply to all tests that take have an `opts` parameter. Some have additional opts, but these are common to all:
+Some tests expose an `opts` parameter. The following options are common to all these tests. Tests may also specify additional per-test parameters which you can find in the documentation for that particular test.
 
 ##### boolean required
 
