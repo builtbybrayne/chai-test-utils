@@ -421,6 +421,10 @@ describe('Tests', () => {
     Tests.isAnObject(test, {allowFalsy: true});
   });
 
+  it('should test for arrays', () => {
+    const test = (input) => Joi.attempt(input, Joi.array().required());
+    Tests.isAnArray(test);
+  });
   it('should test for functions', () => {
     const test = (input) => Joi.attempt(input, Joi.func().required());
     Tests.isAFunction(test);

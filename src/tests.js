@@ -151,6 +151,17 @@ class Tests {
     Tests.isAnObject(assignAndTest(input, fieldName, testFn), opts);
   }
 
+  static isAnArray(testFn, opts={}) {
+    let good =[[]];
+    let bad = [true,1,-1,'string',{},()=>{}];
+
+    Tests.goodAndBad(good, bad, testFn, opts);
+  }
+
+  static fieldIsAnArray(input, field, testFn, opts={}) {
+    Tests.isAnArray(assignAndTest(input, field, testFn), opts);
+  }
+
   static isAFunction(testFn, opts={}) {
     let good = [()=>{}];
     let bad = [true,false,0,1,-1,'','string',NaN,null,[],{}];

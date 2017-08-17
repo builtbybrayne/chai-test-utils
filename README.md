@@ -110,6 +110,14 @@ const test = arg => { if (typeof arg !== 'object') { throw new Error(); } };
 Tests.isAnObject(test);
 ```
 
+##### isAnArray(testFn, opts)
+
+```js
+const test = arg => { if (!Array.isArray(arg) { throw new Error(); } };
+
+Tests.isAnArray(test);
+```
+
 ##### isAFunction(testFn, opts)
 
 ```js
