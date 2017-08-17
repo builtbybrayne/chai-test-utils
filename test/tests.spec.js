@@ -411,6 +411,11 @@ describe('Tests', () => {
     const test = (input) => Joi.attempt(input, Joi.object().required());
     Tests.isAnObject(test);
   });
+  it('should test for objects using the example', () => {
+    const example = {a: 1};
+    const test = (input) => { if (input !== example) { throw Error()} };
+    Tests.isAnObject(test, {example});
+  });
   it('should test for field objects', () => {
     const test = (input) => Joi.attempt(input, Joi.object({field: Joi.object().required()}).required());
     Tests.fieldIsAnObject(input, field, test);
@@ -425,10 +430,21 @@ describe('Tests', () => {
     const test = (input) => Joi.attempt(input, Joi.array().required());
     Tests.isAnArray(test);
   });
+  it('should test for arrays using the example', () => {
+    const example = ['a', 'b'];
+    const test = (input) => { if (input !== example) { throw Error()} };
+    Tests.isAnArray(test, {example});
+  });
   it('should test for functions', () => {
     const test = (input) => Joi.attempt(input, Joi.func().required());
     Tests.isAFunction(test);
   });
+  it('should test for functions using the example', () => {
+    const example = () => {};
+    const test = (input) => { if (input !== example) { throw Error()} };
+    Tests.isAFunction(test, {example});
+  });
+
   it('should test for field functions', () => {
     const test = (input) => Joi.attempt(input, Joi.object({field: Joi.func().required()}).required());
     Tests.fieldIsAFunction(input, field, test);

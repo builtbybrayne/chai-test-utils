@@ -140,7 +140,7 @@ class Tests {
   }
 
   static isAnObject(testFn, opts={}) {
-    let good = [{}];
+    let good = [opts.example || {}];
     let bad = [true,1,-1,'string',[],()=>{}];
     ({good, bad} = allowFalsy(good, bad, opts.allowFalsy));
 
@@ -152,7 +152,7 @@ class Tests {
   }
 
   static isAnArray(testFn, opts={}) {
-    let good =[[]];
+    let good =[opts.example || []];
     let bad = [true,1,-1,'string',{},()=>{}];
 
     Tests.goodAndBad(good, bad, testFn, opts);
@@ -163,7 +163,7 @@ class Tests {
   }
 
   static isAFunction(testFn, opts={}) {
-    let good = [()=>{}];
+    let good = [opts.example || (()=>{})];
     let bad = [true,false,0,1,-1,'','string',NaN,null,[],{}];
 
     Tests.goodAndBad(good, bad, testFn, opts);
