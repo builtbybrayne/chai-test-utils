@@ -255,11 +255,13 @@ class Tests {
     Tests.isADateString(assignAndTest(input, fieldName, testFn), opts);
   }
 
+
   static isANumber(testFn, opts={}) {
-    opts = Object.assign({required: true, integer: false, positive: false, nonzero: false}, opts);
+    opts = Object.assign({required: true, integer: false, positive: false, nonzero: false, min: false, max: false}, opts);
 
     let good = [];
     let bad = [true,false,'','string',NaN,null,[],()=>{},{}];
+
 
     good.push(1);
     good.push('1');
@@ -287,11 +289,68 @@ class Tests {
       good.push(-1);
       good.push('-1');
     }
+
     Tests.goodAndBad(good, bad, testFn, opts);
   }
 
   static fieldIsANumber(input, fieldName, testFn, opts={}) {
     Tests.isANumber(assignAndTest(input, fieldName, testFn), opts);
+  }
+
+
+
+  static isANumberInRange(testFn, opts={}) {
+    opts = Object.assign({required: true, integer: false, min: false, max: false}, opts);
+    let good = [];
+    let bad = [true,false,'','string',NaN,null,[],()=>{},{}];
+    const {min, max} = opts;
+
+    if (max === false && min === false) {
+      throw new Error('Cannot test for a number in range without either a min or max option');
+    }
+
+    if (min !== false && max !== false) {
+      if (min > max) {
+        throw new Error('Cannot test for a number in range when min > max');
+      }
+      good.push(min);
+      good.push(max);
+      bad.push(min - 1);
+      bad.push(max + 1);
+      if (opts.integer) {
+        good.push(Math.floor((min + max) / 2));
+        bad.push(((min + max) / 2) + 0.000000000001);
+      } else {
+        good.push(((min + max) / 2) + 0.00000000001);
+      }
+
+    } else  if (max !== false) {
+      good.push(max);
+      bad.push(max + 1);
+      if (opts.integer) {
+        good.push(max - 1);
+        bad.push(max - 1.000000000001);
+      } else {
+        good.push(max - 1.000000000001);
+      }
+
+    } else if (min !== false) {
+      good.push(min);
+      bad.push(min - 1);
+      if (opts.integer) {
+        good.push(min + 1);
+        bad.push(min + 0.000000001);
+      } else {
+        good.push(min + 0.000000001);
+      }
+
+    }
+
+    Tests.goodAndBad(good, bad, testFn, opts);
+  }
+
+  static fieldIsANumberInRange(input, fieldName, testFn, opts={}) {
+    Tests.isANumberInRange(assignAndTest(input, fieldName, testFn), opts);
   }
 
   static matchesTheContract(functions, testFn, opts={}) {

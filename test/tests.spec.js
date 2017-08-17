@@ -337,7 +337,56 @@ describe('Tests', () => {
       Tests.fieldIsANumber(input, field, test, {positive: true, integer: true, nonzero: true});
     });
   });
-  
+
+  describe('numbers in range', () => {
+    it('throws an error if neither min nor max is defined', () => {
+      expect(() => Tests.isANumberInRange(() => {}, {})).to.throw();
+    });
+    it('throws an error if min > max', () => {
+      expect(() => Tests.isANumberInRange(() => {}, {min: 1, max: 0})).to.throw();
+    });
+    it('tests for numbers in a range, both min and max defined', () => {
+      const test = (input) => Joi.attempt(input, Joi.number().min(1).max(5).required());
+      Tests.isANumberInRange(test, {min: 1, max: 5});
+    });
+    it('tests for numbers in a range, only min defined', () => {
+      const test = (input) => Joi.attempt(input, Joi.number().min(1).required());
+      Tests.isANumberInRange(test, {min: 1});
+    });
+    it('tests for numbers in a range, only max defined', () => {
+      const test = (input) => Joi.attempt(input, Joi.number().max(1).required());
+      Tests.isANumberInRange(test, {max: 1});
+    });
+    it('tests for numbers in a range, both min and max defined, non-integer', () => {
+      const test = (input) => Joi.attempt(input, Joi.number().min(0.5).max(5.5).required());
+      Tests.isANumberInRange(test, {min: 0.5, max: 5.5});
+    });
+    it('tests for numbers in a range, only min defined', () => {
+      const test = (input) => Joi.attempt(input, Joi.number().min(0.5).required());
+      Tests.isANumberInRange(test, {min: 0.5});
+    });
+    it('tests for numbers in a range, only max defined', () => {
+      const test = (input) => Joi.attempt(input, Joi.number().max(5.5).required());
+      Tests.isANumberInRange(test, {max: 5.5});
+    });
+    it('tests for integers in a range', () => {
+      const test = (input) => Joi.attempt(input, Joi.number().integer().min(1).max(10).required());
+      Tests.isANumberInRange(test, {min: 1, max: 10, integer: true});
+    });
+    it('tests for integers in a range, when min and max are the same', () => {
+      const test = (input) => Joi.attempt(input, Joi.number().integer().min(1).max(1).required());
+      Tests.isANumberInRange(test, {min: 1, max: 1, integer: true});
+    });
+    it('tests for integers in a range, when min and max are one apart', () => {
+      const test = (input) => Joi.attempt(input, Joi.number().integer().min(1).max(2).required());
+      Tests.isANumberInRange(test, {min: 1, max: 2, integer: true});
+    });
+    it('throws and error if the min or max are not integers but opts.integer is defined', () => {
+      expect(() => Tests.isANumberInRange(() => {}, {min: 0.5, integer: true})).to.throw();
+      expect(() => Tests.isANumberInRange(() => {}, {max: 0.5, integer: true})).to.throw();
+    });
+  });
+
   it('should default the field', () => {
     const test = (input) => Joi.attempt(input, Joi.object({field: Joi.any().default('def')}));
     Tests.defaultsField(input, field, 'def', test);

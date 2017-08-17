@@ -30,17 +30,19 @@ module.exports = {
     return error;
   },
 
-  resolveAndTick(fn) {
+  resolveAndTick(fn, opts={}) {
+    const restore = opts.restore || (() => {});
     return new Promise((resolve, reject) => {
       Promise.resolve().then(() => {
         process.nextTick(() => {
           const result = fn();
           if (result === undefined) {
             resolve();
+            restore();
           } else {
             result
-              .then(x => resolve(x))
-              .catch(e => reject(e))
+              .then(x => {resolve(x); restore();})
+              .catch(e => {reject(e); restore(); })
           }
         });
       });
