@@ -303,10 +303,15 @@ class Tests {
     opts = Object.assign({required: true, integer: false, min: false, max: false}, opts);
     let good = [];
     let bad = [true,false,'','string',NaN,null,[],()=>{},{}];
-    const {min, max} = opts;
+    let {min, max} = opts;
 
     if (max === false && min === false) {
       throw new Error('Cannot test for a number in range without either a min or max option');
+    }
+
+    if (opts.integer) {
+      min = (min !== false) ? Math.ceil(min) : min;
+      max = (max !== false) ? Math.floor(max) : max;
     }
 
     if (min !== false && max !== false) {

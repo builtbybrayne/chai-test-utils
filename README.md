@@ -252,6 +252,26 @@ const test = arg { if (isNaN(arg) || !Number.isInteger(arg) || arg < 0) { throw 
 Tests.isANumber(test, {positive: true, integer: true});
 ```
 
+
+##### isANumberInRange(test, opts)
+
+Additional Opts:
+
+* `min: false`
+* `max: false`
+* `integer: false`
+
+This will throw an error if neither `min` nor `max` are defined or `min < max`.
+
+Limits are treated as inclusive.
+
+```
+const test = n => Joi.assert(n, Joi.number().integer().min(0).max(10));
+
+Tests.isANumberInRange(test, {integer: true, min: 0, max: 10});
+```
+
+
 ##### matchesTheContract(functions, test, opts)
 
 This checks if the argument is an object which matches a specific contract. 
