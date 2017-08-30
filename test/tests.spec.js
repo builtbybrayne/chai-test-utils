@@ -1,11 +1,10 @@
 'use strict';
-import 'babel-polyfill';
 const chai = require("chai");
 const expect = chai.expect;
 chai.use(require('chai-as-promised'));
 
-import Joi from 'joi';
-import {Tests} from "../src/index";
+const Joi = require('joi');
+const {Tests} = require("../src/index");
 
 
 describe('Tests', () => {
