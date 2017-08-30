@@ -1,6 +1,6 @@
 {
   "name": "chai-test-utils",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Test utils such as async support",
   "main": "src/index.js",
   "scripts": {
