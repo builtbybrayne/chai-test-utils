@@ -35,7 +35,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       Promise.resolve().then(() => {
         process.nextTick(() => {
-          const result = fn();
+          const result = typeof fn === 'function' ? fn() : undefined;
           if (result === undefined) {
             resolve();
             restore();
