@@ -60,12 +60,12 @@ function allowFalsy(good, bad, allow, options={}) {
 
 function testGood(good, testFn) {
   good.forEach(good => {
-    expect(() => testFn(good), `${good} to not throw`).not.to.throw();
+    expect(() => testFn(good), `'${good}' should not throw`).not.to.throw();
   });
 }
 function testBad(bad, testFn) {
   bad.forEach(bad => {
-    expect(() => testFn(bad), `${bad} to throw`).to.throw();
+    expect(() => testFn(bad), `'${bad}' should throw`).to.throw();
   });
 }
 
